@@ -1,9 +1,10 @@
-import Database from 'better-sqlite3'
-import { drizzle } from 'drizzle-orm/better-sqlite3'
+import { config } from 'dotenv'
+import { drizzle } from 'drizzle-orm/node-postgres'
 import { tours } from './schema.ts'
 
-const sqlite = new Database('./divine.db')
-const db = drizzle(sqlite)
+config({ path: ['.env.local', '.env'] })
+
+const db = drizzle(process.env.DATABASE_URL!)
 
 const tourData = [
   {
@@ -126,4 +127,4 @@ await db.delete(tours)
 await db.insert(tours).values(tourData)
 
 console.log(`✓ Seeded ${tourData.length} tours`)
-sqlite.close()
+process.exit(0)

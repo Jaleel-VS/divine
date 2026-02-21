@@ -1,7 +1,7 @@
-import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
+import { pgTable, serial, text, integer, timestamp } from 'drizzle-orm/pg-core'
 
-export const tours = sqliteTable('tours', {
-  id: integer().primaryKey({ autoIncrement: true }),
+export const tours = pgTable('tours', {
+  id: serial().primaryKey(),
   name: text().notNull(),
   tagline: text().notNull(),
   description: text().notNull(),
@@ -10,21 +10,21 @@ export const tours = sqliteTable('tours', {
   price: integer().notNull(),
   maxGuests: integer('max_guests').notNull(),
   imageUrl: text('image_url').notNull(),
-  highlights: text().notNull(), // JSON array string
-  createdAt: integer('created_at', { mode: 'timestamp' }).$defaultFn(() => new Date()),
+  highlights: text().notNull(),
+  createdAt: timestamp('created_at').defaultNow(),
 })
 
-export const inquiries = sqliteTable('inquiries', {
-  id: integer().primaryKey({ autoIncrement: true }),
+export const inquiries = pgTable('inquiries', {
+  id: serial().primaryKey(),
   name: text().notNull(),
   email: text().notNull(),
   tourId: integer('tour_id'),
   message: text().notNull(),
-  createdAt: integer('created_at', { mode: 'timestamp' }).$defaultFn(() => new Date()),
+  createdAt: timestamp('created_at').defaultNow(),
 })
 
-export const todos = sqliteTable('todos', {
-  id: integer().primaryKey({ autoIncrement: true }),
+export const todos = pgTable('todos', {
+  id: serial().primaryKey(),
   title: text().notNull(),
-  createdAt: integer('created_at', { mode: 'timestamp' }).$defaultFn(() => new Date()),
+  createdAt: timestamp('created_at').defaultNow(),
 })
