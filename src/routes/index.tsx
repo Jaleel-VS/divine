@@ -20,20 +20,20 @@ function Home() {
       {/* Hero */}
       <section className="relative h-[92vh] overflow-hidden">
         <img
-          src="https://images.unsplash.com/photo-1516426122078-c23e76319801?w=1600&q=80"
-          alt="African elephants in the wild"
+          src="https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=1600&q=80"
+          alt="Namibia dunes at sunrise"
           className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-dark/40" />
         <div className="relative h-full flex flex-col justify-end pb-20 px-8 max-w-6xl mx-auto">
           <p className="text-cream/70 font-sans text-sm tracking-[0.25em] uppercase mb-4">
-            Est. 2008 · Nairobi, Kenya
+            Est. 2010 · Windhoek, Namibia
           </p>
           <h1 className="font-display text-cream text-7xl md:text-8xl font-semibold leading-none mb-6 max-w-3xl">
-            Where the Wild<br />Still Calls.
+            Namibia,<br />Unfiltered.
           </h1>
           <p className="font-sans text-cream/80 text-lg font-light max-w-xl mb-10 leading-relaxed">
-            We design bespoke African safaris for travellers who want the real thing — raw wilderness, expert guides, and no shortcuts.
+            We are Namibia's safari specialists — built from the ground up to show you the real country. Vast, stark, and unlike anywhere else on earth.
           </p>
           <div className="flex items-center gap-4">
             <Link
@@ -46,7 +46,7 @@ function Home() {
               to="/contact"
               className="border border-cream/50 text-cream font-sans font-medium text-sm tracking-wide px-8 py-3.5 hover:bg-cream/10 transition-colors"
             >
-              Get in Touch
+              Plan Your Safari
             </Link>
           </div>
         </div>
@@ -57,18 +57,18 @@ function Home() {
         <div className="grid md:grid-cols-2 gap-16 items-center">
           <div>
             <p className="text-rust font-sans text-xs tracking-[0.3em] uppercase mb-4">
-              About Kalahari & Co.
+              About Divine Tours & Safari
             </p>
             <h2 className="font-display text-5xl font-semibold leading-tight mb-6">
-              Sixteen years of guiding the extraordinary.
+              Fifteen years of knowing Namibia intimately.
             </h2>
           </div>
           <div>
             <p className="text-taupe font-light text-lg leading-relaxed mb-4">
-              We are a small, family-run operation based in Nairobi. We don't believe in cookie-cutter itineraries or overcrowded lodges. Every safari we design is built around the traveller — your pace, your interests, your version of Africa.
+              We are a Windhoek-based operation run by Namibians, for travellers who want depth over convenience. We know the dunes, the salt pans, the desert-adapted wildlife and the people who live alongside them.
             </p>
             <p className="text-taupe font-light text-lg leading-relaxed">
-              Our guides have decades of collective experience and deep relationships with the landscapes they work in. They know where the leopard naps after a kill. They know which river crossing will happen on which morning. That knowledge is your advantage.
+              Every itinerary we design is built around one principle: the fewer people between you and the wilderness, the better. Our guides don't read from a script. They grew up here.
             </p>
           </div>
         </div>
@@ -109,7 +109,7 @@ function Home() {
             Tell us your dream. We'll plan the rest.
           </h2>
           <p className="text-taupe font-light text-lg mb-10 max-w-lg mx-auto">
-            No hard sell. Just a conversation about what matters to you — and the best way to make it happen.
+            No hard sell. Just a conversation about what matters to you — and the best way to make it happen in Namibia.
           </p>
           <Link
             to="/contact"

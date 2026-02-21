@@ -5,16 +5,16 @@ export const Route = createFileRoute('/about')({ component: About })
 function About() {
   const values = [
     {
-      title: 'Wild First',
-      body: 'We design every itinerary to minimise footprint and maximise authenticity. No overcrowded lodges. No tourist conveyor belts. Just you and the wilderness.',
+      title: 'Namibia First',
+      body: 'We operate exclusively in Namibia. That focus means depth, not breadth — guides who know every waterhole in Etosha, every dune shadow in Sossusvlei, every desert-adapted species in Damaraland.',
     },
     {
       title: 'Community Rooted',
-      body: 'A significant portion of every safari fee goes directly to the local communities whose land we travel through. Conservation only works when people benefit from it.',
+      body: 'Our team is Namibian. A meaningful portion of every booking goes directly to local communities and conservation initiatives in the areas we operate. Tourism that benefits the land and the people on it.',
     },
     {
-      title: 'Expert Led',
-      body: 'Every guide we work with has spent at least a decade in the field. They are naturalists, trackers, and storytellers — people who make the bush legible.',
+      title: 'Small by Design',
+      body: 'We cap every safari at ten guests. Smaller groups mean better sightings, more flexibility, and guides who can give you their full attention. We will never sacrifice quality for volume.',
     },
   ]
 
@@ -28,11 +28,11 @@ function About() {
               Our Story
             </p>
             <h1 className="font-display text-6xl font-semibold leading-tight">
-              Built from a love of wild places.
+              Born from a love of the Namib.
             </h1>
           </div>
           <p className="text-taupe font-light text-xl leading-relaxed">
-            Kalahari & Co. was founded in 2008 by James and Amara Odhiambo, who met on a research expedition in the Maasai Mara. What began as a shared obsession became a vocation — and eventually, a company.
+            Divine Tours & Safari was founded in 2010 by Thomas and Ester Nghifikepunye, two Namibians who believed their country deserved a safari company as serious about it as they were.
           </p>
         </div>
       </section>
@@ -42,23 +42,23 @@ function About() {
         <div>
           <img
             src="https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?w=900&q=80"
-            alt="Safari guide in the field"
+            alt="Safari guide in Namibia"
             className="w-full aspect-[3/4] object-cover"
           />
         </div>
         <div className="pt-4">
           <h2 className="font-display text-4xl font-semibold mb-6">
-            Sixteen years, thousands of safaris, one standard.
+            Fifteen years. One country. No compromises.
           </h2>
           <div className="space-y-5 text-taupe font-light text-lg leading-relaxed">
             <p>
-              We started with a single Land Cruiser, two guides, and a deep conviction that the safari industry was selling something it wasn't delivering: genuine wilderness encounters, tailored to individual travellers, led by people who genuinely knew the land.
+              We started with two Land Cruisers and a conviction that Namibia was being undersold. Most operators treated it as a stop on a broader African circuit. We saw something different — a country so singular, so extreme in its beauty, that it deserved your full attention.
             </p>
             <p>
-              Today, we operate across six African countries and work with a carefully curated network of owner-run camps and lodges that share our values. Our team includes field biologists, former park rangers, and cultural historians.
+              Today we run safaris across Namibia's most spectacular landscapes: the red dunes of Sossusvlei, the salt pans of Etosha, the wild shores of the Skeleton Coast, the ancient rock art of Damaraland, and the dramatic silence of the Fish River Canyon.
             </p>
             <p>
-              We've stayed deliberately small. The day we can no longer personally vouch for every experience we sell is the day we stop operating.
+              Our guides are not tour operators who memorised facts. They are trackers, naturalists, and storytellers who were raised in this landscape. That is an advantage no itinerary can manufacture.
             </p>
           </div>
         </div>
@@ -90,10 +90,10 @@ function About() {
       <section className="py-24 px-6 border-b border-mist">
         <div className="max-w-3xl mx-auto text-center">
           <blockquote className="font-display text-4xl font-medium italic leading-snug mb-8">
-            "The Serengeti at dawn, with James explaining what the lion's posture meant — I've never felt so completely present in my life."
+            "Standing on top of Big Daddy at sunrise with Thomas pointing out oryx tracks in the valley below — that's not something you find on a package tour."
           </blockquote>
           <p className="font-sans text-sm tracking-widest text-taupe uppercase">
-            — Catherine R., London · Serengeti Migration, 2023
+            — Mark T., Amsterdam · Sossusvlei & Skeleton Coast, 2024
           </p>
         </div>
       </section>
@@ -103,7 +103,7 @@ function About() {
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
           <div>
             <h2 className="font-display text-4xl font-semibold mb-2">
-              Ready to plan your safari?
+              Ready to see Namibia properly?
             </h2>
             <p className="text-taupe font-light">
               Start with a conversation. No pressure, no pitch — just an honest discussion about your trip.

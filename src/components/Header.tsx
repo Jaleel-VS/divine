@@ -28,7 +28,7 @@ export default function Header() {
           to="/"
           className="font-display text-2xl font-semibold text-dark tracking-wide hover:text-rust transition-colors"
         >
-          Kalahari & Co.
+          Divine Tours & Safari
         </Link>
 
         <div ref={navRef} className="relative flex items-center gap-1 p-1">

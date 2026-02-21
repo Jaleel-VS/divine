@@ -11,7 +11,7 @@ export const Route = createRootRoute({
     meta: [
       { charSet: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { title: 'Kalahari & Co. Safaris' },
+      { title: 'Divine Tours & Safari' },
     ],
     links: [
       { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -55,8 +55,8 @@ function Footer() {
     <footer className="bg-dark text-cream/70 mt-24">
       <div className="max-w-6xl mx-auto px-6 py-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
         <div>
-          <p className="font-display text-2xl text-cream font-semibold">Kalahari & Co.</p>
-          <p className="text-sm mt-1 font-light tracking-wide">Exceptional African Safaris Since 2008</p>
+          <p className="font-display text-2xl text-cream font-semibold">Divine Tours & Safari</p>
+          <p className="text-sm mt-1 font-light tracking-wide">Namibia's Premier Safari Specialists</p>
         </div>
         <nav className="flex gap-8 text-sm font-medium tracking-wide">
           <Link to="/" className="hover:text-cream transition-colors">Home</Link>
@@ -65,7 +65,7 @@ function Footer() {
           <Link to="/contact" className="hover:text-cream transition-colors">Contact</Link>
         </nav>
         <p className="text-xs font-light">
-          © {new Date().getFullYear()} Kalahari & Co. Safaris.<br />All rights reserved.
+          © {new Date().getFullYear()} Divine Tours & Safari.<br />All rights reserved.
         </p>
       </div>
     </footer>

@@ -89,7 +89,7 @@ function Contact() {
           </p>
           <h1 className="font-display text-6xl font-semibold mb-6">Let's plan something.</h1>
           <p className="text-taupe font-light text-xl max-w-2xl leading-relaxed">
-            Tell us about your dream trip. We'll come back with ideas, not a sales pitch. All enquiries are answered personally within 48 hours.
+            Tell us about your dream Namibia trip. We'll come back with ideas, not a sales pitch. All enquiries are answered personally within 48 hours.
           </p>
         </div>
       </section>
@@ -155,7 +155,7 @@ function Contact() {
               rows={7}
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              placeholder="Tell us about your ideal trip — when, where, who you're travelling with, anything else on your mind..."
+              placeholder="Tell us about your ideal Namibia trip — when, which regions interest you, who you're travelling with, anything else on your mind..."
               className={`${inputClass} resize-none`}
             />
           </div>
