@@ -4,7 +4,7 @@ import { db } from '#/db/index'
 import { tours } from '#/db/schema'
 
 const getFeaturedTours = createServerFn({ method: 'GET' }).handler(async () => {
-  return db.select().from(tours).limit(3).all()
+  return db.select().from(tours).limit(3)
 })
 
 export const Route = createFileRoute('/')({

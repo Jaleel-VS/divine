@@ -5,7 +5,7 @@ import { db } from '#/db/index'
 import { inquiries, tours } from '#/db/schema'
 
 const getTours = createServerFn({ method: 'GET' }).handler(async () => {
-  return db.select({ id: tours.id, name: tours.name }).from(tours).all()
+  return db.select({ id: tours.id, name: tours.name }).from(tours)
 })
 
 const submitInquiry = createServerFn({ method: 'POST' })

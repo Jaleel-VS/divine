@@ -7,7 +7,7 @@ import { tours } from '#/db/schema'
 const getTour = createServerFn({ method: 'GET' })
   .inputValidator((tourId: string) => tourId)
   .handler(async ({ data: tourId }) => {
-    const tour = await db.select().from(tours).where(eq(tours.id, Number(tourId))).get()
+    const [tour] = await db.select().from(tours).where(eq(tours.id, Number(tourId)))
     if (!tour) throw notFound()
     return tour
   })
