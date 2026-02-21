@@ -16,7 +16,7 @@
     "db:pull": "drizzle-kit pull",
     "db:studio": "drizzle-kit studio",
     "db:seed": "tsx src/db/seed.ts",
-    "start": "node dist/server/server.js"
+    "start": "node .output/server/index.mjs"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.18",
@@ -29,6 +29,7 @@
     "drizzle-kit": "^0.31.8",
     "drizzle-orm": "^0.45.0",
     "lucide-react": "^0.545.0",
+    "nitro": "npm:nitro-nightly@3.0.1-20260219-081345-4df7aab2",
     "pg": "^8.18.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
