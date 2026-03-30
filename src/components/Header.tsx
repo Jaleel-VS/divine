@@ -26,9 +26,15 @@ export default function Header() {
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
         <Link
           to="/"
-          className="font-display text-2xl font-semibold text-dark tracking-wide hover:text-rust transition-colors"
+          className="flex items-center gap-3 font-display text-2xl font-semibold text-dark tracking-wide hover:text-rust transition-colors"
         >
-          Divine Tours & Safari
+          <div className="w-10 h-10 rounded-full bg-dark flex items-center justify-center text-cream text-sm font-bold shrink-0">
+            D
+          </div>
+          <div>
+            <span className="block text-center">Divine</span>
+            <span className="block">Tours & Safaris</span>
+          </div>
         </Link>
 
         <div ref={navRef} className="relative flex items-center gap-1 p-1">

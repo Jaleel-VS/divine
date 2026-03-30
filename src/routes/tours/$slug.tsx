@@ -1,32 +1,24 @@
 import { Link, createFileRoute, notFound } from '@tanstack/react-router'
-import { createServerFn } from '@tanstack/react-start'
-import { eq } from 'drizzle-orm'
-import { db } from '#/db/index'
-import { tours } from '#/db/schema'
+import { fetchTourBySlug } from '#/lib/strapi'
 
-const getTour = createServerFn({ method: 'GET' })
-  .inputValidator((tourId: string) => tourId)
-  .handler(async ({ data: tourId }) => {
-    const [tour] = await db.select().from(tours).where(eq(tours.id, Number(tourId)))
+export const Route = createFileRoute('/tours/$slug')({
+  component: TourDetail,
+  loader: async ({ params }) => {
+    const tour = await fetchTourBySlug(params.slug)
     if (!tour) throw notFound()
     return tour
-  })
-
-export const Route = createFileRoute('/tours/$tourId')({
-  component: TourDetail,
-  loader: async ({ params }) => await getTour({ data: params.tourId }),
+  },
 })
 
 function TourDetail() {
   const tour = Route.useLoaderData()
-  const highlights: string[] = JSON.parse(tour.highlights)
 
   return (
     <div className="min-h-screen">
       {/* Hero image */}
       <div className="relative h-[60vh] overflow-hidden">
         <img
-          src={tour.imageUrl}
+          src={tour.image?.url ?? ""}
           alt={tour.name}
           className="w-full h-full object-cover"
         />
@@ -56,7 +48,7 @@ function TourDetail() {
             <div>
               <h2 className="font-display text-3xl font-semibold mb-6">Tour Highlights</h2>
               <ul className="space-y-3">
-                {highlights.map((h, i) => (
+                {tour.highlights.map((h, i) => (
                   <li key={i} className="flex items-start gap-4">
                     <span className="mt-1.5 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-rust" />
                     <span className="font-sans font-light text-taupe leading-relaxed">{h}</span>
@@ -91,7 +83,7 @@ function TourDetail() {
 
               <Link
                 to="/contact"
-                search={{ tourId: tour.id }}
+                search={{ tour: tour.documentId }}
                 className="block w-full bg-dark text-cream font-sans font-medium text-sm tracking-wide text-center py-4 hover:bg-rust transition-colors mb-4"
               >
                 Inquire About This Safari

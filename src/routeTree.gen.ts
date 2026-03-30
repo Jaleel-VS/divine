@@ -9,13 +9,18 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ToursIndexRouteImport } from './routes/tours/index'
-import { Route as ToursTourIdRouteImport } from './routes/tours/$tourId'
-import { Route as DemoDrizzleRouteImport } from './routes/demo/drizzle'
+import { Route as ToursSlugRouteImport } from './routes/tours/$slug'
 
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
@@ -36,14 +41,9 @@ const ToursIndexRoute = ToursIndexRouteImport.update({
   path: '/tours/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ToursTourIdRoute = ToursTourIdRouteImport.update({
-  id: '/tours/$tourId',
-  path: '/tours/$tourId',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DemoDrizzleRoute = DemoDrizzleRouteImport.update({
-  id: '/demo/drizzle',
-  path: '/demo/drizzle',
+const ToursSlugRoute = ToursSlugRouteImport.update({
+  id: '/tours/$slug',
+  path: '/tours/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -51,16 +51,16 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
-  '/demo/drizzle': typeof DemoDrizzleRoute
-  '/tours/$tourId': typeof ToursTourIdRoute
+  '/terms': typeof TermsRoute
+  '/tours/$slug': typeof ToursSlugRoute
   '/tours/': typeof ToursIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
-  '/demo/drizzle': typeof DemoDrizzleRoute
-  '/tours/$tourId': typeof ToursTourIdRoute
+  '/terms': typeof TermsRoute
+  '/tours/$slug': typeof ToursSlugRoute
   '/tours': typeof ToursIndexRoute
 }
 export interface FileRoutesById {
@@ -68,34 +68,22 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
-  '/demo/drizzle': typeof DemoDrizzleRoute
-  '/tours/$tourId': typeof ToursTourIdRoute
+  '/terms': typeof TermsRoute
+  '/tours/$slug': typeof ToursSlugRoute
   '/tours/': typeof ToursIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/about'
-    | '/contact'
-    | '/demo/drizzle'
-    | '/tours/$tourId'
-    | '/tours/'
+  fullPaths: '/' | '/about' | '/contact' | '/terms' | '/tours/$slug' | '/tours/'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/about'
-    | '/contact'
-    | '/demo/drizzle'
-    | '/tours/$tourId'
-    | '/tours'
+  to: '/' | '/about' | '/contact' | '/terms' | '/tours/$slug' | '/tours'
   id:
     | '__root__'
     | '/'
     | '/about'
     | '/contact'
-    | '/demo/drizzle'
-    | '/tours/$tourId'
+    | '/terms'
+    | '/tours/$slug'
     | '/tours/'
   fileRoutesById: FileRoutesById
 }
@@ -103,13 +91,20 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   ContactRoute: typeof ContactRoute
-  DemoDrizzleRoute: typeof DemoDrizzleRoute
-  ToursTourIdRoute: typeof ToursTourIdRoute
+  TermsRoute: typeof TermsRoute
+  ToursSlugRoute: typeof ToursSlugRoute
   ToursIndexRoute: typeof ToursIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/contact': {
       id: '/contact'
       path: '/contact'
@@ -138,18 +133,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ToursIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/tours/$tourId': {
-      id: '/tours/$tourId'
-      path: '/tours/$tourId'
-      fullPath: '/tours/$tourId'
-      preLoaderRoute: typeof ToursTourIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/drizzle': {
-      id: '/demo/drizzle'
-      path: '/demo/drizzle'
-      fullPath: '/demo/drizzle'
-      preLoaderRoute: typeof DemoDrizzleRouteImport
+    '/tours/$slug': {
+      id: '/tours/$slug'
+      path: '/tours/$slug'
+      fullPath: '/tours/$slug'
+      preLoaderRoute: typeof ToursSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -159,8 +147,8 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   ContactRoute: ContactRoute,
-  DemoDrizzleRoute: DemoDrizzleRoute,
-  ToursTourIdRoute: ToursTourIdRoute,
+  TermsRoute: TermsRoute,
+  ToursSlugRoute: ToursSlugRoute,
   ToursIndexRoute: ToursIndexRoute,
 }
 export const routeTree = rootRouteImport

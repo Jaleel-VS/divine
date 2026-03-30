@@ -1,39 +1,63 @@
-import { Link, createFileRoute } from '@tanstack/react-router'
-import { createServerFn } from '@tanstack/react-start'
-import { db } from '#/db/index'
-import { tours } from '#/db/schema'
+import { Link, createFileRoute } from "@tanstack/react-router";
+import React from "react";
+import { fetchFeaturedTours } from "#/lib/strapi";
 
-const getFeaturedTours = createServerFn({ method: 'GET' }).handler(async () => {
-  return db.select().from(tours).limit(3)
-})
-
-export const Route = createFileRoute('/')({
+export const Route = createFileRoute("/")({
   component: Home,
-  loader: async () => await getFeaturedTours(),
-})
+  loader: () => fetchFeaturedTours(),
+});
+
+const HERO_IMAGES = [
+  'https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=1600&q=80',
+  'https://images.unsplash.com/photo-1516426122078-c23e76319801?w=1600&q=80',
+  'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=1600&q=80',
+]
+
+function HeroSlideshow() {
+  const [current, setCurrent] = React.useState(0)
+
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrent((i) => (i + 1) % HERO_IMAGES.length)
+    }, 15000)
+    return () => clearInterval(timer)
+  }, [])
+
+  return (
+    <>
+      {HERO_IMAGES.map((src, i) => (
+        <img
+          key={src}
+          src={src}
+          alt="Namibia landscape"
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${i === current ? 'opacity-100' : 'opacity-0'}`}
+        />
+      ))}
+    </>
+  )
+}
 
 function Home() {
-  const featured = Route.useLoaderData()
+  const featured = Route.useLoaderData();
 
   return (
     <div>
       {/* Hero */}
       <section className="relative h-[92vh] overflow-hidden">
-        <img
-          src="https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=1600&q=80"
-          alt="Namibia dunes at sunrise"
-          className="absolute inset-0 w-full h-full object-cover"
-        />
+        <HeroSlideshow />
         <div className="absolute inset-0 bg-dark/40" />
         <div className="relative h-full flex flex-col justify-end pb-20 px-8 max-w-6xl mx-auto">
           <p className="text-cream/70 font-sans text-sm tracking-[0.25em] uppercase mb-4">
-            Est. 2010 · Windhoek, Namibia
+            Est. 2019 · Windhoek, Namibia
           </p>
           <h1 className="font-display text-cream text-7xl md:text-8xl font-semibold leading-none mb-6 max-w-3xl">
-            Namibia,<br />Unfiltered.
+            Namibia,
+            <br />
+            Unfiltered.
           </h1>
           <p className="font-sans text-cream/80 text-lg font-light max-w-xl mb-10 leading-relaxed">
-            We are Namibia's safari specialists — built from the ground up to show you the real country. Vast, stark, and unlike anywhere else on earth.
+            A young, proudly Namibian safari operator, born from a love for
+            nature.
           </p>
           <div className="flex items-center gap-4">
             <Link
@@ -57,18 +81,23 @@ function Home() {
         <div className="grid md:grid-cols-2 gap-16 items-center">
           <div>
             <p className="text-rust font-sans text-xs tracking-[0.3em] uppercase mb-4">
-              About Divine Tours & Safari
+              About Divine Tours & Safaris
             </p>
             <h2 className="font-display text-5xl font-semibold leading-tight mb-6">
-              Fifteen years of knowing Namibia intimately.
+              Seven years of knowing Namibia intimately.
             </h2>
           </div>
           <div>
             <p className="text-taupe font-light text-lg leading-relaxed mb-4">
-              We are a Windhoek-based operation run by Namibians, for travellers who want depth over convenience. We know the dunes, the salt pans, the desert-adapted wildlife and the people who live alongside them.
+              We are a Windhoek-based operation run by Namibians, for travellers
+              who want depth over convenience. We know the red dunes of the
+              Namib, the Etosha salt pan, the desert-adapted wildlife and the
+              people who live alongside them.
             </p>
             <p className="text-taupe font-light text-lg leading-relaxed">
-              Every itinerary we design is built around one principle: the fewer people between you and the wilderness, the better. Our guides don't read from a script. They grew up here.
+              Every itinerary we design is built around one principle: the fewer
+              people between you and the wilderness, the better. Our guides
+              don't read from a script. They grew up here.
             </p>
           </div>
         </div>
@@ -104,12 +133,15 @@ function Home() {
       {/* CTA Strip */}
       <section className="border-y border-mist py-20">
         <div className="max-w-6xl mx-auto px-6 text-center">
-          <p className="text-rust font-sans text-xs tracking-[0.3em] uppercase mb-4">Ready to Go?</p>
+          <p className="text-rust font-sans text-xs tracking-[0.3em] uppercase mb-4">
+            Ready to Go?
+          </p>
           <h2 className="font-display text-5xl font-semibold mb-4">
             Tell us your dream. We'll plan the rest.
           </h2>
           <p className="text-taupe font-light text-lg mb-10 max-w-lg mx-auto">
-            No hard sell. Just a conversation about what matters to you — and the best way to make it happen in Namibia.
+            No hard sell. Just a conversation about what matters to you — and
+            the best way to make it happen in Namibia.
           </p>
           <Link
             to="/contact"
@@ -120,45 +152,45 @@ function Home() {
         </div>
       </section>
     </div>
-  )
+  );
 }
 
-type Tour = {
-  id: number
-  name: string
-  tagline: string
-  location: string
-  duration: number
-  price: number
-  imageUrl: string
-}
+import type { StrapiTour } from "#/lib/strapi";
 
-function TourCard({ tour, dark }: { tour: Tour; dark?: boolean }) {
+function TourCard({ tour, dark }: { tour: StrapiTour; dark?: boolean }) {
   return (
     <Link
-      to="/tours/$tourId"
-      params={{ tourId: String(tour.id) }}
+      to="/tours/$slug"
+      params={{ slug: tour.slug }}
       className="group block"
     >
       <div className="overflow-hidden aspect-[4/3] mb-4">
         <img
-          src={tour.imageUrl}
+          src={tour.image?.url ?? ""}
           alt={tour.name}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
         />
       </div>
-      <p className={`font-sans text-xs tracking-[0.2em] uppercase mb-1.5 ${dark ? 'text-rust' : 'text-taupe'}`}>
+      <p
+        className={`font-sans text-xs tracking-[0.2em] uppercase mb-1.5 ${dark ? "text-rust" : "text-taupe"}`}
+      >
         {tour.location} · {tour.duration} days
       </p>
-      <h3 className={`font-display text-2xl font-semibold mb-1 group-hover:text-rust transition-colors ${dark ? 'text-cream' : 'text-dark'}`}>
+      <h3
+        className={`font-display text-2xl font-semibold mb-1 group-hover:text-rust transition-colors ${dark ? "text-cream" : "text-dark"}`}
+      >
         {tour.name}
       </h3>
-      <p className={`font-sans text-sm font-light italic ${dark ? 'text-cream/60' : 'text-taupe'}`}>
+      <p
+        className={`font-sans text-sm font-light italic ${dark ? "text-cream/60" : "text-taupe"}`}
+      >
         {tour.tagline}
       </p>
-      <p className={`font-sans text-sm font-medium mt-3 ${dark ? 'text-cream/50' : 'text-taupe'}`}>
+      <p
+        className={`font-sans text-sm font-medium mt-3 ${dark ? "text-cream/50" : "text-taupe"}`}
+      >
         From ${tour.price.toLocaleString()} pp
       </p>
     </Link>
-  )
+  );
 }

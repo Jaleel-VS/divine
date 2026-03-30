@@ -1,0 +1,32 @@
+{
+  "kind": "collectionType",
+  "collectionName": "inquiries",
+  "info": {
+    "singularName": "inquiry",
+    "pluralName": "inquiries",
+    "displayName": "Inquiry",
+    "description": "Contact form submissions from site visitors"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "email",
+      "required": true
+    },
+    "tour": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::tour.tour"
+    },
+    "message": {
+      "type": "text",
+      "required": true
+    }
+  }
+}

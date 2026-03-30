@@ -32,7 +32,7 @@ function About() {
             </h1>
           </div>
           <p className="text-taupe font-light text-xl leading-relaxed">
-            Divine Tours & Safari was founded in 2010 by Thomas and Ester Nghifikepunye, two Namibians who believed their country deserved a safari company as serious about it as they were.
+            Divine Tours & Safari was founded in 2019 by Graham van Staden, a Namibian who believed their country deserved a safari company as serious about it as they were.
           </p>
         </div>
       </section>

@@ -1,19 +1,13 @@
-import { Link, createFileRoute } from '@tanstack/react-router'
-import { createServerFn } from '@tanstack/react-start'
-import { db } from '#/db/index'
-import { tours } from '#/db/schema'
+import { Link, createFileRoute } from "@tanstack/react-router";
+import { fetchTours } from "#/lib/strapi";
 
-const getAllTours = createServerFn({ method: 'GET' }).handler(async () => {
-  return db.select().from(tours)
-})
-
-export const Route = createFileRoute('/tours/')({
+export const Route = createFileRoute("/tours/")({
   component: Tours,
-  loader: async () => await getAllTours(),
-})
+  loader: () => fetchTours(),
+});
 
 function Tours() {
-  const allTours = Route.useLoaderData()
+  const allTours = Route.useLoaderData();
 
   return (
     <div className="min-h-screen">
@@ -23,9 +17,13 @@ function Tours() {
           <p className="text-rust font-sans text-xs tracking-[0.3em] uppercase mb-4">
             Our Itineraries
           </p>
-          <h1 className="font-display text-6xl font-semibold mb-6">All Safaris</h1>
+          <h1 className="font-display text-6xl font-semibold mb-6">
+            All Safaris
+          </h1>
           <p className="text-taupe font-light text-xl max-w-2xl leading-relaxed">
-            Six hand-crafted itineraries across the continent's most extraordinary wilderness areas. Each one is a starting point — we tailor everything to you.
+            Six hand-crafted itineraries across the countries most extraordinary
+            wilderness areas. Each one is a starting point — we tailor
+            everything to you.
           </p>
         </div>
       </section>
@@ -36,13 +34,13 @@ function Tours() {
           {allTours.map((tour) => (
             <Link
               key={tour.id}
-              to="/tours/$tourId"
-              params={{ tourId: String(tour.id) }}
+              to="/tours/$slug"
+              params={{ slug: tour.slug }}
               className="group block"
             >
               <div className="overflow-hidden aspect-[4/3] mb-5">
                 <img
-                  src={tour.imageUrl}
+                  src={tour.image?.url ?? ""}
                   alt={tour.name}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
@@ -74,5 +72,5 @@ function Tours() {
         </div>
       </section>
     </div>
-  )
+  );
 }
