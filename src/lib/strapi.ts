@@ -1,3 +1,5 @@
+import { createServerFn } from '@tanstack/react-start'
+
 const STRAPI_URL = process.env.STRAPI_URL || 'http://localhost:1337'
 const STRAPI_TOKEN = process.env.STRAPI_API_TOKEN
 
@@ -46,60 +48,55 @@ function resolveImageUrl(tour: StrapiTour): StrapiTour {
 
 // --- Tour queries ---
 
-export async function fetchTours(): Promise<StrapiTour[]> {
+export const fetchTours = createServerFn().handler(async () => {
   const res = await fetchAPI<StrapiList<StrapiTour>>(
     '/api/tours?sort=createdAt:asc&populate=image',
   )
   return res.data.map(resolveImageUrl)
-}
+})
 
-export async function fetchFeaturedTours(): Promise<StrapiTour[]> {
+export const fetchFeaturedTours = createServerFn().handler(async () => {
   const res = await fetchAPI<StrapiList<StrapiTour>>(
     '/api/tours?filters[featured][$eq]=true&sort=createdAt:asc&populate=image',
   )
   return res.data.map(resolveImageUrl)
-}
+})
 
-export async function fetchTourBySlug(
-  slug: string,
-): Promise<StrapiTour | null> {
-  const res = await fetchAPI<StrapiList<StrapiTour>>(
-    `/api/tours?filters[slug][$eq]=${encodeURIComponent(slug)}&populate=image`,
-  )
-  const tour = res.data[0] ?? null
-  return tour ? resolveImageUrl(tour) : null
-}
+export const fetchTourBySlug = createServerFn()
+  .inputValidator((slug: string) => slug)
+  .handler(async ({ data: slug }) => {
+    const res = await fetchAPI<StrapiList<StrapiTour>>(
+      `/api/tours?filters[slug][$eq]=${encodeURIComponent(slug)}&populate=image`,
+    )
+    const tour = res.data[0] ?? null
+    return tour ? resolveImageUrl(tour) : null
+  })
 
-export async function fetchTourNames(): Promise<
-  { id: number; documentId: string; name: string }[]
-> {
+export const fetchTourNames = createServerFn().handler(async () => {
   const res = await fetchAPI<StrapiList<StrapiTour>>(
     '/api/tours?fields[0]=name&sort=createdAt:asc',
   )
   return res.data
-}
+})
 
 // --- Inquiry mutation ---
 
-export async function submitInquiry(payload: {
-  name: string
-  email: string
-  tour?: string // documentId
-  message: string
-}) {
-  const data: Record<string, unknown> = {
-    name: payload.name,
-    email: payload.email,
-    message: payload.message,
-  }
-  if (payload.tour) data.tour = payload.tour
+export const submitInquiry = createServerFn({ method: 'POST' })
+  .inputValidator(
+    (input: { name: string; email: string; tour?: string; message: string }) =>
+      input,
+  )
+  .handler(async ({ data: payload }) => {
+    const body: Record<string, unknown> = {
+      name: payload.name,
+      email: payload.email,
+      message: payload.message,
+    }
+    if (payload.tour) body.tour = payload.tour
 
-  return fetchAPI<StrapiSingle<{ documentId: string }>>(
-    '/api/inquiries',
-    {
+    return fetchAPI<StrapiSingle<{ documentId: string }>>('/api/inquiries', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ data }),
-    },
-  )
-}
+      body: JSON.stringify({ data: body }),
+    })
+  })

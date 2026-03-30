@@ -4,7 +4,7 @@ import { fetchTourBySlug } from '#/lib/strapi'
 export const Route = createFileRoute('/tours/$slug')({
   component: TourDetail,
   loader: async ({ params }) => {
-    const tour = await fetchTourBySlug(params.slug)
+    const tour = await fetchTourBySlug({ data: params.slug })
     if (!tour) throw notFound()
     return tour
   },

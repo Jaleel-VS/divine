@@ -25,10 +25,12 @@ function Contact() {
     e.preventDefault();
     setLoading(true);
     await submitInquiry({
-      name,
-      email,
-      tour: tour || undefined,
-      message,
+      data: {
+        name,
+        email,
+        tour: tour || undefined,
+        message,
+      },
     });
     setSent(true);
     setLoading(false);
