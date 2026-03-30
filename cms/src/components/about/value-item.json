@@ -1,0 +1,11 @@
+{
+  "collectionName": "components_about_value_items",
+  "info": {
+    "displayName": "Value Item",
+    "icon": "star"
+  },
+  "attributes": {
+    "title": { "type": "string", "required": true },
+    "body": { "type": "text", "required": true }
+  }
+}

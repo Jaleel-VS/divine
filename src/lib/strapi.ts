@@ -81,6 +81,24 @@ export const fetchTourNames = createServerFn().handler(async () => {
   return res.data
 })
 
+// --- About page ---
+
+export type StrapiAboutPage = {
+  tagline: string
+  intro: string
+  story: { type: string; children: { type: string; text: string }[] }[]
+  quote: string
+  quoteAuthor: string
+  values: { title: string; body: string }[]
+}
+
+export const fetchAboutPage = createServerFn().handler(async () => {
+  const res = await fetchAPI<{ data: StrapiAboutPage }>(
+    '/api/about-page?populate=values',
+  )
+  return res.data
+})
+
 // --- Inquiry mutation ---
 
 export const submitInquiry = createServerFn({ method: 'POST' })

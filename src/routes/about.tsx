@@ -1,22 +1,45 @@
 import { Link, createFileRoute } from '@tanstack/react-router'
+import { fetchAboutPage } from '#/lib/strapi'
 
-export const Route = createFileRoute('/about')({ component: About })
+export const Route = createFileRoute('/about')({
+  component: About,
+  loader: async () => {
+    try { return await fetchAboutPage() } catch { return null }
+  },
+})
+
+const FALLBACK = {
+  tagline: 'Born from a love for nature.',
+  intro: 'Divine Tours & Safari was founded in 2019 by Graham van Staden, a Namibian who believed his country deserved a safari company as serious about it as he was.',
+  story: [
+    'From humble beginnings by renting 4×4 tour vehicles and a conviction that Namibia was being undersold. Most operators treated it as a stop on a broader African circuit. We saw something different — a country so singular, so extreme in its beauty, that it deserved your full attention.',
+    'Today we run safaris across Namibia\'s most spectacular landscapes: the red dunes of Sossusvlei, Southern Namibia, Coastal mega of Namibia, the salt pans of Etosha, the ancient rock art of Damaraland, and the dramatic silence of the Fish River Canyon.',
+    'Our guides are not tour operators who memorised facts. They are trackers, naturalists, and storytellers who were raised in this landscape. That is an advantage no itinerary can manufacture.',
+  ],
+  quote: 'The world is a book, and those who do not travel read only a page.',
+  quoteAuthor: 'St. Augustine',
+  values: [
+    { title: 'Namibia First', body: 'We operate solely in Namibia. This focus allows for depth rather than breadth — guides who are familiar with every waterhole in Etosha, every dune shadow in Sossusvlei, and every desert-adapted species in Damaraland.' },
+    { title: 'Community Rooted', body: 'Our team is Namibian. A significant portion of every booking is directed towards supporting local communities and conservation initiatives within the areas we operate. We promote a form of tourism that benefits both the land and its people.' },
+    { title: 'Small by Design', body: 'We limit every safari to eight guests per vehicle. Smaller groups result in better sightings, increased flexibility, and guides who can provide their full attention. We will never compromise quality for quantity.' },
+  ],
+}
 
 function About() {
-  const values = [
-    {
-      title: 'Namibia First',
-      body: 'We operate exclusively in Namibia. That focus means depth, not breadth — guides who know every waterhole in Etosha, every dune shadow in Sossusvlei, every desert-adapted species in Damaraland.',
-    },
-    {
-      title: 'Community Rooted',
-      body: 'Our team is Namibian. A meaningful portion of every booking goes directly to local communities and conservation initiatives in the areas we operate. Tourism that benefits the land and the people on it.',
-    },
-    {
-      title: 'Small by Design',
-      body: 'We cap every safari at ten guests. Smaller groups mean better sightings, more flexibility, and guides who can give you their full attention. We will never sacrifice quality for volume.',
-    },
-  ]
+  const data = Route.useLoaderData()
+
+  const tagline = data?.tagline ?? FALLBACK.tagline
+  const intro = data?.intro ?? FALLBACK.intro
+  const quote = data?.quote ?? FALLBACK.quote
+  const quoteAuthor = data?.quoteAuthor ?? FALLBACK.quoteAuthor
+  const values = data?.values?.length ? data.values : FALLBACK.values
+
+  // story: Strapi blocks → plain text paragraphs, or fallback strings
+  const storyParagraphs: string[] = data?.story?.length
+    ? data.story.map((block) =>
+        block.children.map((c) => c.text).join('')
+      )
+    : FALLBACK.story
 
   return (
     <div className="min-h-screen">
@@ -28,39 +51,29 @@ function About() {
               Our Story
             </p>
             <h1 className="font-display text-6xl font-semibold leading-tight">
-              Born from a love of the Namib.
+              {tagline}
             </h1>
           </div>
-          <p className="text-taupe font-light text-xl leading-relaxed">
-            Divine Tours & Safari was founded in 2019 by Graham van Staden, a Namibian who believed their country deserved a safari company as serious about it as they were.
-          </p>
+          <p className="text-taupe font-light text-xl leading-relaxed">{intro}</p>
         </div>
       </section>
 
       {/* Story */}
-      <section className="max-w-6xl mx-auto px-6 py-24 grid md:grid-cols-2 gap-16 items-start">
-        <div>
-          <img
-            src="https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?w=900&q=80"
-            alt="Safari guide in Namibia"
-            className="w-full aspect-[3/4] object-cover"
-          />
+      <section className="max-w-6xl mx-auto px-6 py-24">
+        <div className="space-y-5 text-taupe font-light text-lg leading-relaxed max-w-3xl">
+          {storyParagraphs.map((p, i) => <p key={i}>{p}</p>)}
         </div>
-        <div className="pt-4">
-          <h2 className="font-display text-4xl font-semibold mb-6">
-            Fifteen years. One country. No compromises.
-          </h2>
-          <div className="space-y-5 text-taupe font-light text-lg leading-relaxed">
-            <p>
-              We started with two Land Cruisers and a conviction that Namibia was being undersold. Most operators treated it as a stop on a broader African circuit. We saw something different — a country so singular, so extreme in its beauty, that it deserved your full attention.
-            </p>
-            <p>
-              Today we run safaris across Namibia's most spectacular landscapes: the red dunes of Sossusvlei, the salt pans of Etosha, the wild shores of the Skeleton Coast, the ancient rock art of Damaraland, and the dramatic silence of the Fish River Canyon.
-            </p>
-            <p>
-              Our guides are not tour operators who memorised facts. They are trackers, naturalists, and storytellers who were raised in this landscape. That is an advantage no itinerary can manufacture.
-            </p>
-          </div>
+      </section>
+
+      {/* Quote */}
+      <section className="py-20 px-6 border-t border-b border-mist">
+        <div className="max-w-3xl mx-auto text-center">
+          <blockquote className="font-display text-5xl font-medium italic leading-snug">
+            "{quote}"
+          </blockquote>
+          <p className="font-sans text-sm tracking-widest text-taupe uppercase mt-6">
+            — {quoteAuthor}
+          </p>
         </div>
       </section>
 
@@ -76,9 +89,7 @@ function About() {
           <div className="grid md:grid-cols-3 gap-12">
             {values.map((v) => (
               <div key={v.title}>
-                <h3 className="font-display text-cream text-3xl font-semibold mb-4">
-                  {v.title}
-                </h3>
+                <h3 className="font-display text-cream text-3xl font-semibold mb-4">{v.title}</h3>
                 <p className="font-sans text-cream/60 font-light leading-relaxed">{v.body}</p>
               </div>
             ))}
@@ -86,33 +97,14 @@ function About() {
         </div>
       </section>
 
-      {/* Quote */}
-      <section className="py-24 px-6 border-b border-mist">
-        <div className="max-w-3xl mx-auto text-center">
-          <blockquote className="font-display text-4xl font-medium italic leading-snug mb-8">
-            "Standing on top of Big Daddy at sunrise with Thomas pointing out oryx tracks in the valley below — that's not something you find on a package tour."
-          </blockquote>
-          <p className="font-sans text-sm tracking-widest text-taupe uppercase">
-            — Mark T., Amsterdam · Sossusvlei & Skeleton Coast, 2024
-          </p>
-        </div>
-      </section>
-
       {/* CTA */}
       <section className="py-20 px-6">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
           <div>
-            <h2 className="font-display text-4xl font-semibold mb-2">
-              Ready to see Namibia properly?
-            </h2>
-            <p className="text-taupe font-light">
-              Start with a conversation. No pressure, no pitch — just an honest discussion about your trip.
-            </p>
+            <h2 className="font-display text-4xl font-semibold mb-2">Ready to see Namibia properly?</h2>
+            <p className="text-taupe font-light">Start with a conversation. No pressure, no pitch — just an honest discussion about your trip.</p>
           </div>
-          <Link
-            to="/contact"
-            className="flex-shrink-0 bg-dark text-cream font-sans font-medium text-sm tracking-wide px-10 py-4 hover:bg-rust transition-colors"
-          >
+          <Link to="/contact" className="flex-shrink-0 bg-dark text-cream font-sans font-medium text-sm tracking-wide px-10 py-4 hover:bg-rust transition-colors">
             Get in Touch
           </Link>
         </div>
