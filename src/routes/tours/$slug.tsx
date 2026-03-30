@@ -17,10 +17,9 @@ function TourDetail() {
   const itinerary = tour.itinerary?.length
     ? tour.itinerary
     : [
-        { day: 1, title: 'Arrival & Welcome', description: 'Arrive at the lodge, settle in, and enjoy a welcome dinner under the stars.' },
-        { day: 2, title: 'Morning Game Drive', description: 'Early morning drive through the reserve with an experienced guide.' },
-        { day: 3, title: 'Full Day Exploration', description: 'A full day exploring the landscape with packed lunch and sundowner drinks.' },
-        { day: 4, title: 'Departure', description: 'Final morning at leisure before transfer to the airstrip.' },
+        { day: 1, title: 'Windhoek → Namib Desert (285km)', description: 'Afternoon Sesriem Canyon exploration and other activities.' },
+        { day: 2, title: 'Full-day Sossusvlei/Deadvlei clay pan adventure (55km)', description: 'Climb Dune 45 at sunrise and explore the ancient Dead Vlei.' },
+        { day: 3, title: 'Return to Windhoek (375km)', description: 'Final morning at leisure before the drive back.' },
       ]
 
   return (
@@ -55,23 +54,44 @@ function TourDetail() {
               {tour.description}
             </p>
 
-            <div>
-              <h2 className="font-display text-3xl font-semibold mb-6">Tour Highlights</h2>
-              <ul className="space-y-3">
-                {tour.highlights.map((h, i) => (
-                  <li key={i} className="flex items-start gap-4">
-                    <span className="mt-1.5 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-rust" />
-                    <span className="font-sans font-light text-taupe leading-relaxed">{h}</span>
-                  </li>
-                ))}
-              </ul>
-              <button
-                type="button"
-                onClick={() => dialogRef.current?.showModal()}
-                className="mt-8 font-sans text-sm tracking-wide text-rust hover:text-dark transition-colors cursor-pointer"
-              >
-                View full itinerary →
-              </button>
+            <div className="grid sm:grid-cols-2 gap-10">
+              {/* Highlights */}
+              <div>
+                <h2 className="font-display text-3xl font-semibold mb-6">Tour Highlights</h2>
+                <ul className="space-y-3">
+                  {tour.highlights.map((h, i) => (
+                    <li key={i} className="flex items-start gap-4">
+                      <span className="mt-1.5 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-rust" />
+                      <span className="font-sans font-light text-taupe leading-relaxed">{h}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Itinerary preview */}
+              <div>
+                <h2 className="font-display text-3xl font-semibold mb-6">Itinerary</h2>
+                <ol className="space-y-4">
+                  {itinerary.map((item) => (
+                    <li key={item.day} className="flex gap-4">
+                      <span className="font-sans text-xs tracking-[0.15em] uppercase text-rust pt-0.5 w-10 flex-shrink-0">
+                        Day {item.day}
+                      </span>
+                      <div>
+                        <p className="font-sans text-sm font-medium text-dark">{item.title}</p>
+                        <p className="font-sans text-sm font-light text-taupe leading-relaxed line-clamp-2">{item.description}</p>
+                      </div>
+                    </li>
+                  ))}
+                </ol>
+                <button
+                  type="button"
+                  onClick={() => dialogRef.current?.showModal()}
+                  className="mt-6 font-sans text-sm tracking-wide text-rust hover:text-dark transition-colors cursor-pointer"
+                >
+                  View full itinerary →
+                </button>
+              </div>
             </div>
           </div>
 
@@ -120,7 +140,7 @@ function TourDetail() {
       <dialog
         ref={dialogRef}
         onClick={(e) => e.target === dialogRef.current && dialogRef.current.close()}
-        className="w-full max-w-2xl max-h-[80vh] overflow-y-auto p-0 backdrop:bg-dark/50 open:flex flex-col"
+        className="w-full max-w-2xl max-h-[80vh] overflow-y-auto p-0 backdrop:bg-dark/50 open:flex flex-col m-auto"
       >
         <div className="flex items-center justify-between px-8 py-6 border-b border-mist sticky top-0 bg-cream">
           <h2 className="font-display text-2xl font-semibold">{tour.name} — Itinerary</h2>
