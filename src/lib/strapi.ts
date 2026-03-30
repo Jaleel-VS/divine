@@ -34,6 +34,7 @@ export type StrapiTour = {
   highlights: string[]
   featured: boolean
   image?: { url: string } | null
+  itinerary?: { day: number; title: string; description: string }[]
 }
 
 type StrapiList<T> = { data: T[]; meta: { pagination: { total: number } } }
@@ -66,7 +67,7 @@ export const fetchTourBySlug = createServerFn()
   .inputValidator((slug: string) => slug)
   .handler(async ({ data: slug }) => {
     const res = await fetchAPI<StrapiList<StrapiTour>>(
-      `/api/tours?filters[slug][$eq]=${encodeURIComponent(slug)}&populate=image`,
+      `/api/tours?filters[slug][$eq]=${encodeURIComponent(slug)}&populate=image&populate=itinerary`,
     )
     const tour = res.data[0] ?? null
     return tour ? resolveImageUrl(tour) : null

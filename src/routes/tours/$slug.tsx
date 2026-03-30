@@ -1,4 +1,5 @@
 import { Link, createFileRoute, notFound } from '@tanstack/react-router'
+import { useRef } from 'react'
 import { fetchTourBySlug } from '#/lib/strapi'
 
 export const Route = createFileRoute('/tours/$slug')({
@@ -12,6 +13,15 @@ export const Route = createFileRoute('/tours/$slug')({
 
 function TourDetail() {
   const tour = Route.useLoaderData()
+  const dialogRef = useRef<HTMLDialogElement>(null)
+  const itinerary = tour.itinerary?.length
+    ? tour.itinerary
+    : [
+        { day: 1, title: 'Arrival & Welcome', description: 'Arrive at the lodge, settle in, and enjoy a welcome dinner under the stars.' },
+        { day: 2, title: 'Morning Game Drive', description: 'Early morning drive through the reserve with an experienced guide.' },
+        { day: 3, title: 'Full Day Exploration', description: 'A full day exploring the landscape with packed lunch and sundowner drinks.' },
+        { day: 4, title: 'Departure', description: 'Final morning at leisure before transfer to the airstrip.' },
+      ]
 
   return (
     <div className="min-h-screen">
@@ -55,6 +65,13 @@ function TourDetail() {
                   </li>
                 ))}
               </ul>
+              <button
+                type="button"
+                onClick={() => dialogRef.current?.showModal()}
+                className="mt-8 font-sans text-sm tracking-wide text-rust hover:text-dark transition-colors cursor-pointer"
+              >
+                View full itinerary →
+              </button>
             </div>
           </div>
 
@@ -98,6 +115,37 @@ function TourDetail() {
           </div>
         </div>
       </div>
+
+      {/* Itinerary modal */}
+      <dialog
+        ref={dialogRef}
+        onClick={(e) => e.target === dialogRef.current && dialogRef.current.close()}
+        className="w-full max-w-2xl max-h-[80vh] overflow-y-auto p-0 backdrop:bg-dark/50 open:flex flex-col"
+      >
+        <div className="flex items-center justify-between px-8 py-6 border-b border-mist sticky top-0 bg-cream">
+          <h2 className="font-display text-2xl font-semibold">{tour.name} — Itinerary</h2>
+          <button
+            type="button"
+            onClick={() => dialogRef.current?.close()}
+            className="font-sans text-taupe hover:text-dark transition-colors text-xl leading-none cursor-pointer"
+          >
+            ✕
+          </button>
+        </div>
+        <div className="px-8 py-6 space-y-6">
+          {itinerary.map((item) => (
+            <div key={item.day} className="flex gap-6">
+              <div className="flex-shrink-0 w-10 h-10 rounded-full bg-dark text-cream font-sans text-sm font-medium flex items-center justify-center">
+                {item.day}
+              </div>
+              <div>
+                <h3 className="font-display text-lg font-semibold mb-1">{item.title}</h3>
+                <p className="font-sans font-light text-taupe leading-relaxed">{item.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </dialog>
     </div>
   )
 }

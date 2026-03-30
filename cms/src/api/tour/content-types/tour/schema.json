@@ -57,6 +57,11 @@
     "featured": {
       "type": "boolean",
       "default": false
+    },
+    "itinerary": {
+      "type": "component",
+      "repeatable": true,
+      "component": "tour.itinerary-day"
     }
   }
 }

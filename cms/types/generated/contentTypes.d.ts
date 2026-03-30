@@ -482,6 +482,7 @@ export interface ApiTourTour extends Struct.CollectionTypeSchema {
     featured: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     highlights: Schema.Attribute.JSON & Schema.Attribute.Required;
     image: Schema.Attribute.Media<'images'>;
+    itinerary: Schema.Attribute.Component<'tour.itinerary-day', true>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::tour.tour'> &
       Schema.Attribute.Private;
