@@ -1,5 +1,5 @@
 import { Link, createFileRoute, notFound } from "@tanstack/react-router";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { fetchTourBySlug } from "#/lib/strapi";
 
 export const Route = createFileRoute("/tours/$slug")({
@@ -36,16 +36,65 @@ function TourDetail() {
         },
       ];
 
+  const slides = tour.gallery?.length
+    ? tour.gallery.map((g) => g.url)
+    : tour.image?.url
+      ? [tour.image.url]
+      : []
+
+  const [current, setCurrent] = useState(0)
+
+  useEffect(() => {
+    if (slides.length <= 1) return
+    const t = setInterval(() => setCurrent((c) => (c + 1) % slides.length), 5000)
+    return () => clearInterval(t)
+  }, [slides.length])
+
   return (
     <div className="min-h-screen">
-      {/* Hero image */}
+      {/* Hero carousel */}
       <div className="relative h-[60vh] overflow-hidden">
-        <img
-          src={tour.image?.url ?? ""}
-          alt={tour.name}
-          className="w-full h-full object-cover"
-        />
+        {slides.map((url, i) => (
+          <img
+            key={url}
+            src={url}
+            alt={`${tour.name} ${i + 1}`}
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${i === current ? 'opacity-100' : 'opacity-0'}`}
+          />
+        ))}
         <div className="absolute inset-0 bg-dark/30" />
+
+        {/* Prev / Next buttons */}
+        {slides.length > 1 && (
+          <>
+            <button
+              type="button"
+              onClick={() => setCurrent((c) => (c - 1 + slides.length) % slides.length)}
+              className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center bg-dark/40 text-cream hover:bg-dark/70 transition-colors cursor-pointer"
+            >
+              ‹
+            </button>
+            <button
+              type="button"
+              onClick={() => setCurrent((c) => (c + 1) % slides.length)}
+              className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center bg-dark/40 text-cream hover:bg-dark/70 transition-colors cursor-pointer"
+            >
+              ›
+            </button>
+            {/* Dots */}
+            <div className="absolute bottom-20 left-1/2 -translate-x-1/2 flex gap-2">
+              {slides.map((_, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  onClick={() => setCurrent(i)}
+                  className={`w-1.5 h-1.5 rounded-full transition-colors cursor-pointer ${i === current ? 'bg-cream' : 'bg-cream/40'}`}
+                />
+              ))}
+            </div>
+          </>
+        )}
+
         <div className="absolute bottom-0 left-0 right-0 px-8 pb-12 max-w-6xl mx-auto">
           <p className="text-cream/70 font-sans text-xs tracking-[0.25em] uppercase mb-3">
             {tour.location}

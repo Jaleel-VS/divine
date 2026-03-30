@@ -68,7 +68,7 @@ export const fetchTourBySlug = createServerFn()
   .inputValidator((slug: string) => slug)
   .handler(async ({ data: slug }) => {
     const res = await fetchAPI<StrapiList<StrapiTour>>(
-      `/api/tours?filters[slug][$eq]=${encodeURIComponent(slug)}&populate=image&populate=itinerary`,
+      `/api/tours?filters[slug][$eq]=${encodeURIComponent(slug)}&populate=image&populate=itinerary&populate=gallery`,
     )
     const tour = res.data[0] ?? null
     return tour ? resolveImageUrl(tour) : null
