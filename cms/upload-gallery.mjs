@@ -46,14 +46,14 @@ for (const filePath of IMAGES) {
   const buffer = await readFile(filePath).catch(() => null)
   if (!buffer) { console.log(`⏭ Skipping (not found): ${filePath}`); continue }
 
+  const name = basename(filePath)
+  const mime = extname(filePath).toLowerCase() === '.png' ? 'image/png' : 'image/jpeg'
+
   // Resize to max 1600px wide using sips (macOS built-in)
   const tmpPath = `/tmp/gallery-${Date.now()}-${name.replace(/\s/g, '_')}`
   const { execSync } = await import('node:child_process')
   execSync(`sips -Z 1600 "${filePath}" --out "${tmpPath}" 2>/dev/null`)
   const resized = await readFile(tmpPath)
-
-  const name = basename(filePath)
-  const mime = extname(filePath).toLowerCase() === '.png' ? 'image/png' : 'image/jpeg'
 
   console.log(`⬆ Uploading ${name}...`)
   const form = new FormData()
