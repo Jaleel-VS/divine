@@ -480,6 +480,7 @@ export interface ApiTourTour extends Struct.CollectionTypeSchema {
     description: Schema.Attribute.Text & Schema.Attribute.Required;
     duration: Schema.Attribute.Integer & Schema.Attribute.Required;
     featured: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    gallery: Schema.Attribute.Media<'images', true>;
     highlights: Schema.Attribute.JSON & Schema.Attribute.Required;
     image: Schema.Attribute.Media<'images'>;
     itinerary: Schema.Attribute.Component<'tour.itinerary-day', true>;

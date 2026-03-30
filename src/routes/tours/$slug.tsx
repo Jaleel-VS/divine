@@ -1,26 +1,40 @@
-import { Link, createFileRoute, notFound } from '@tanstack/react-router'
-import { useRef } from 'react'
-import { fetchTourBySlug } from '#/lib/strapi'
+import { Link, createFileRoute, notFound } from "@tanstack/react-router";
+import { useRef } from "react";
+import { fetchTourBySlug } from "#/lib/strapi";
 
-export const Route = createFileRoute('/tours/$slug')({
+export const Route = createFileRoute("/tours/$slug")({
   component: TourDetail,
   loader: async ({ params }) => {
-    const tour = await fetchTourBySlug({ data: params.slug })
-    if (!tour) throw notFound()
-    return tour
+    const tour = await fetchTourBySlug({ data: params.slug });
+    if (!tour) throw notFound();
+    return tour;
   },
-})
+});
 
 function TourDetail() {
-  const tour = Route.useLoaderData()
-  const dialogRef = useRef<HTMLDialogElement>(null)
+  const tour = Route.useLoaderData();
+  const dialogRef = useRef<HTMLDialogElement>(null);
   const itinerary = tour.itinerary?.length
     ? tour.itinerary
     : [
-        { day: 1, title: 'Windhoek → Namib Desert (285km)', description: 'Afternoon Sesriem Canyon exploration and other activities.' },
-        { day: 2, title: 'Full-day Sossusvlei/Deadvlei clay pan adventure (55km)', description: 'Climb Dune 45 at sunrise and explore the ancient Dead Vlei.' },
-        { day: 3, title: 'Return to Windhoek (375km)', description: 'Final morning at leisure before the drive back.' },
-      ]
+        {
+          day: 1,
+          title: "Windhoek → Namib Desert (285km)",
+          description:
+            "Afternoon Sesriem Canyon exploration and other activities.",
+        },
+        {
+          day: 2,
+          title: "Full-day Sossusvlei/Deadvlei clay pan adventure (55km)",
+          description:
+            "Climb Dune 45 at sunrise and explore the ancient Dead Vlei.",
+        },
+        {
+          day: 3,
+          title: "Return to Windhoek (375km)",
+          description: "Final morning at leisure before the drive back.",
+        },
+      ];
 
   return (
     <div className="min-h-screen">
@@ -43,7 +57,7 @@ function TourDetail() {
       </div>
 
       {/* Content */}
-      <div className="max-w-6xl mx-auto px-6 py-16">
+      <div className="max-w-7xl mx-auto px-2 py-16">
         <div className="grid lg:grid-cols-3 gap-16">
           {/* Main content */}
           <div className="lg:col-span-2">
@@ -55,12 +69,16 @@ function TourDetail() {
             </p>
 
             <div className="mb-12">
-              <h2 className="font-display text-3xl font-semibold mb-6">Tour Highlights</h2>
+              <h2 className="font-display text-3xl font-semibold mb-6">
+                Tour Highlights
+              </h2>
               <ul className="space-y-3">
                 {tour.highlights.map((h, i) => (
                   <li key={i} className="flex items-start gap-4">
                     <span className="mt-1.5 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-rust" />
-                    <span className="font-sans font-light text-taupe leading-relaxed">{h}</span>
+                    <span className="font-sans font-light text-taupe leading-relaxed">
+                      {h}
+                    </span>
                   </li>
                 ))}
               </ul>
@@ -68,7 +86,9 @@ function TourDetail() {
 
             {/* Itinerary preview */}
             <div>
-              <h2 className="font-display text-3xl font-semibold mb-6">Itinerary</h2>
+              <h2 className="font-display text-3xl font-semibold mb-6">
+                Itinerary
+              </h2>
               <ol className="space-y-4">
                 {itinerary.map((item) => (
                   <li key={item.day} className="flex gap-4">
@@ -76,8 +96,12 @@ function TourDetail() {
                       Day {item.day}
                     </span>
                     <div>
-                      <p className="font-sans text-sm font-medium text-dark">{item.title}</p>
-                      <p className="font-sans text-sm font-light text-taupe leading-relaxed line-clamp-2">{item.description}</p>
+                      <p className="font-sans text-sm font-medium text-dark">
+                        {item.title}
+                      </p>
+                      <p className="font-sans text-sm font-light text-taupe leading-relaxed line-clamp-2">
+                        {item.description}
+                      </p>
                     </div>
                   </li>
                 ))}
@@ -98,20 +122,30 @@ function TourDetail() {
               <p className="font-display text-4xl font-semibold mb-1">
                 ${tour.price.toLocaleString()}
               </p>
-              <p className="font-sans text-xs tracking-wide text-taupe mb-8">per person</p>
+              <p className="font-sans text-xs tracking-wide text-taupe mb-8">
+                per person
+              </p>
 
               <div className="space-y-4 mb-8 pb-8 border-b border-mist">
                 <div className="flex justify-between">
                   <span className="font-sans text-sm text-taupe">Duration</span>
-                  <span className="font-sans text-sm font-medium">{tour.duration} days</span>
+                  <span className="font-sans text-sm font-medium">
+                    {tour.duration} days
+                  </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="font-sans text-sm text-taupe">Location</span>
-                  <span className="font-sans text-sm font-medium">{tour.location}</span>
+                  <span className="font-sans text-sm font-medium">
+                    {tour.location}
+                  </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="font-sans text-sm text-taupe">Group size</span>
-                  <span className="font-sans text-sm font-medium">Max {tour.maxGuests} guests</span>
+                  <span className="font-sans text-sm text-taupe">
+                    Group size
+                  </span>
+                  <span className="font-sans text-sm font-medium">
+                    Max {tour.maxGuests} guests
+                  </span>
                 </div>
               </div>
 
@@ -136,11 +170,15 @@ function TourDetail() {
       {/* Itinerary modal */}
       <dialog
         ref={dialogRef}
-        onClick={(e) => e.target === dialogRef.current && dialogRef.current.close()}
+        onClick={(e) =>
+          e.target === dialogRef.current && dialogRef.current.close()
+        }
         className="w-full max-w-2xl max-h-[80vh] overflow-y-auto p-0 backdrop:bg-dark/50 open:flex flex-col m-auto"
       >
         <div className="flex items-center justify-between px-8 py-6 border-b border-mist sticky top-0 bg-cream">
-          <h2 className="font-display text-2xl font-semibold">{tour.name} — Itinerary</h2>
+          <h2 className="font-display text-2xl font-semibold">
+            {tour.name} — Itinerary
+          </h2>
           <button
             type="button"
             onClick={() => dialogRef.current?.close()}
@@ -156,13 +194,17 @@ function TourDetail() {
                 {item.day}
               </div>
               <div>
-                <h3 className="font-display text-lg font-semibold mb-1">{item.title}</h3>
-                <p className="font-sans font-light text-taupe leading-relaxed">{item.description}</p>
+                <h3 className="font-display text-lg font-semibold mb-1">
+                  {item.title}
+                </h3>
+                <p className="font-sans font-light text-taupe leading-relaxed">
+                  {item.description}
+                </p>
               </div>
             </div>
           ))}
         </div>
       </dialog>
     </div>
-  )
+  );
 }

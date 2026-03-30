@@ -34,6 +34,7 @@ export type StrapiTour = {
   highlights: string[]
   featured: boolean
   image?: { url: string } | null
+  gallery?: { url: string }[]
   itinerary?: { day: number; title: string; description: string }[]
 }
 
