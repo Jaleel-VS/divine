@@ -54,44 +54,41 @@ function TourDetail() {
               {tour.description}
             </p>
 
-            <div className="grid sm:grid-cols-2 gap-10">
-              {/* Highlights */}
-              <div>
-                <h2 className="font-display text-3xl font-semibold mb-6">Tour Highlights</h2>
-                <ul className="space-y-3">
-                  {tour.highlights.map((h, i) => (
-                    <li key={i} className="flex items-start gap-4">
-                      <span className="mt-1.5 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-rust" />
-                      <span className="font-sans font-light text-taupe leading-relaxed">{h}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+            <div className="mb-12">
+              <h2 className="font-display text-3xl font-semibold mb-6">Tour Highlights</h2>
+              <ul className="space-y-3">
+                {tour.highlights.map((h, i) => (
+                  <li key={i} className="flex items-start gap-4">
+                    <span className="mt-1.5 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-rust" />
+                    <span className="font-sans font-light text-taupe leading-relaxed">{h}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-              {/* Itinerary preview */}
-              <div>
-                <h2 className="font-display text-3xl font-semibold mb-6">Itinerary</h2>
-                <ol className="space-y-4">
-                  {itinerary.map((item) => (
-                    <li key={item.day} className="flex gap-4">
-                      <span className="font-sans text-xs tracking-[0.15em] uppercase text-rust pt-0.5 w-10 flex-shrink-0">
-                        Day {item.day}
-                      </span>
-                      <div>
-                        <p className="font-sans text-sm font-medium text-dark">{item.title}</p>
-                        <p className="font-sans text-sm font-light text-taupe leading-relaxed line-clamp-2">{item.description}</p>
-                      </div>
-                    </li>
-                  ))}
-                </ol>
-                <button
-                  type="button"
-                  onClick={() => dialogRef.current?.showModal()}
-                  className="mt-6 font-sans text-sm tracking-wide text-rust hover:text-dark transition-colors cursor-pointer"
-                >
-                  View full itinerary →
-                </button>
-              </div>
+            {/* Itinerary preview */}
+            <div>
+              <h2 className="font-display text-3xl font-semibold mb-6">Itinerary</h2>
+              <ol className="space-y-4">
+                {itinerary.map((item) => (
+                  <li key={item.day} className="flex gap-4">
+                    <span className="font-sans text-xs tracking-[0.15em] uppercase text-rust pt-0.5 w-10 flex-shrink-0">
+                      Day {item.day}
+                    </span>
+                    <div>
+                      <p className="font-sans text-sm font-medium text-dark">{item.title}</p>
+                      <p className="font-sans text-sm font-light text-taupe leading-relaxed line-clamp-2">{item.description}</p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+              <button
+                type="button"
+                onClick={() => dialogRef.current?.showModal()}
+                className="mt-6 font-sans text-sm tracking-wide text-rust hover:text-dark transition-colors cursor-pointer"
+              >
+                View full itinerary →
+              </button>
             </div>
           </div>
 
