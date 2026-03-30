@@ -1,9 +1,7 @@
 # Strapi Migration Progress
 
-> Tracking the migration from Drizzle/Postgres direct DB access to Strapi CMS.
-> See `strapi-plan.md` for the full plan. This file tracks what's actually done.
-
-## Status: Iteration 1 — Strapi Setup
+> **Status: COMPLETE** — Migration from Drizzle/Postgres to Strapi 5 CMS finished 2026-03-30.
+> See `strapi-plan.md` for the original plan.
 
 ### Iteration 1: Strapi Instance + Content Types
 
