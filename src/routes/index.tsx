@@ -189,7 +189,7 @@ function TourCard({ tour, dark }: { tour: StrapiTour; dark?: boolean }) {
       <p
         className={`font-sans text-sm font-medium mt-3 ${dark ? "text-cream/50" : "text-taupe"}`}
       >
-        From ${tour.price.toLocaleString()} pp
+        From ${tour.price.toLocaleString('en-US')} pp
       </p>
     </Link>
   );

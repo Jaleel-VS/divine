@@ -1,6 +1,8 @@
 import { Link, createFileRoute, notFound } from "@tanstack/react-router";
-import { useRef, useState, useEffect } from "react";
+import { lazy, Suspense, useRef, useState, useEffect } from "react";
 import { fetchTourBySlug } from "#/lib/strapi";
+
+const ItineraryMap = lazy(() => import("#/components/ItineraryMap"));
 
 export const Route = createFileRoute("/tours/$slug")({
   component: TourDetail,
@@ -14,6 +16,7 @@ export const Route = createFileRoute("/tours/$slug")({
 function TourDetail() {
   const tour = Route.useLoaderData();
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const [mapOpen, setMapOpen] = useState(false);
   const itinerary = tour.itinerary?.length
     ? tour.itinerary
     : [
@@ -157,7 +160,7 @@ function TourDetail() {
               </ol>
               <button
                 type="button"
-                onClick={() => dialogRef.current?.showModal()}
+                onClick={() => { dialogRef.current?.showModal(); setMapOpen(true); }}
                 className="mt-6 font-sans text-sm tracking-wide text-rust hover:text-dark transition-colors cursor-pointer"
               >
                 View full itinerary →
@@ -169,7 +172,7 @@ function TourDetail() {
           <div className="lg:col-span-1">
             <div className="border border-mist p-8 sticky top-24">
               <p className="font-display text-4xl font-semibold mb-1">
-                ${tour.price.toLocaleString()}
+                ${tour.price.toLocaleString('en-US')}
               </p>
               <p className="font-sans text-xs tracking-wide text-taupe mb-8">
                 per person
@@ -219,10 +222,13 @@ function TourDetail() {
       {/* Itinerary modal */}
       <dialog
         ref={dialogRef}
-        onClick={(e) =>
-          e.target === dialogRef.current && dialogRef.current.close()
-        }
-        className="w-full max-w-2xl max-h-[80vh] overflow-y-auto p-0 backdrop:bg-dark/50 open:flex flex-col m-auto"
+        onClick={(e) => {
+          if (e.target === dialogRef.current) {
+            dialogRef.current.close()
+            setMapOpen(false)
+          }
+        }}
+        className="w-full max-w-5xl max-h-[85vh] overflow-hidden p-0 backdrop:bg-dark/50 open:flex flex-col m-auto"
       >
         <div className="flex items-center justify-between px-8 py-6 border-b border-mist sticky top-0 bg-cream">
           <h2 className="font-display text-2xl font-semibold">
@@ -230,28 +236,37 @@ function TourDetail() {
           </h2>
           <button
             type="button"
-            onClick={() => dialogRef.current?.close()}
+            onClick={() => { dialogRef.current?.close(); setMapOpen(false); }}
             className="font-sans text-taupe hover:text-dark transition-colors text-xl leading-none cursor-pointer"
           >
             ✕
           </button>
         </div>
-        <div className="px-8 py-6 space-y-6">
-          {itinerary.map((item) => (
-            <div key={item.day} className="flex gap-6">
-              <div className="flex-shrink-0 w-10 h-10 rounded-full bg-dark text-cream font-sans text-sm font-medium flex items-center justify-center">
-                {item.day}
+        <div className="flex flex-col md:flex-row flex-1 overflow-hidden">
+          <div className="md:w-1/2 h-64 md:h-auto bg-mist/30">
+            {mapOpen && (
+              <Suspense fallback={<div className="w-full h-full flex items-center justify-center text-taupe text-sm">Loading map…</div>}>
+                <ItineraryMap itinerary={itinerary} />
+              </Suspense>
+            )}
+          </div>
+          <div className="md:w-1/2 overflow-y-auto px-8 py-6 space-y-6">
+            {itinerary.map((item) => (
+              <div key={item.day} className="flex gap-6">
+                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-dark text-cream font-sans text-sm font-medium flex items-center justify-center">
+                  {item.day}
+                </div>
+                <div>
+                  <h3 className="font-display text-lg font-semibold mb-1">
+                    {item.title}
+                  </h3>
+                  <p className="font-sans font-light text-taupe leading-relaxed">
+                    {item.description}
+                  </p>
+                </div>
               </div>
-              <div>
-                <h3 className="font-display text-lg font-semibold mb-1">
-                  {item.title}
-                </h3>
-                <p className="font-sans font-light text-taupe leading-relaxed">
-                  {item.description}
-                </p>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </dialog>
     </div>

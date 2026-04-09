@@ -1,4 +1,4 @@
-import { HeadContent, Scripts, createRootRoute } from "@tanstack/react-router";
+import { HeadContent, Scripts, createRootRoute, Outlet, useRouter } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { TanStackDevtools } from "@tanstack/react-devtools";
 import { Link } from "@tanstack/react-router";
@@ -7,6 +7,8 @@ import Header from "../components/Header";
 import appCss from "../styles.css?url";
 
 export const Route = createRootRoute({
+  component: RootComponent,
+  errorComponent: RootErrorComponent,
   head: () => ({
     meta: [
       { charSet: "utf-8" },
@@ -29,6 +31,46 @@ export const Route = createRootRoute({
   }),
   shellComponent: RootDocument,
 });
+
+function RootComponent() {
+  return <Outlet />
+}
+
+function RootErrorComponent({ error }: { error: Error }) {
+  const router = useRouter()
+  const isDev = process.env.NODE_ENV === 'development'
+  const isFetchError = error?.message?.toLowerCase().includes('fetch')
+
+  return (
+    <div className="min-h-[60vh] flex items-center justify-center px-6">
+      <div className="max-w-md text-center">
+        <p className="font-sans text-xs tracking-[0.25em] uppercase text-rust mb-4">
+          Something went wrong
+        </p>
+        <h1 className="font-display text-4xl font-semibold mb-4">
+          {isFetchError ? 'Unable to load content' : 'Unexpected error'}
+        </h1>
+        <p className="font-sans font-light text-taupe leading-relaxed mb-8">
+          {isFetchError
+            ? "We're having trouble reaching our servers. Please try again in a moment."
+            : 'Something unexpected happened. Please try again.'}
+        </p>
+        {isDev && (
+          <pre className="text-left text-xs bg-dark text-cream/80 p-4 mb-8 overflow-x-auto">
+            {error.message}
+          </pre>
+        )}
+        <button
+          type="button"
+          onClick={() => router.invalidate()}
+          className="bg-dark text-cream font-sans font-medium text-sm tracking-wide px-8 py-3 hover:bg-rust transition-colors cursor-pointer"
+        >
+          Try again
+        </button>
+      </div>
+    </div>
+  )
+}
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (

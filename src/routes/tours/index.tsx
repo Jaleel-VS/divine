@@ -61,7 +61,7 @@ function Tours() {
               </p>
               <div className="flex items-center justify-between pt-3 border-t border-mist">
                 <p className="font-sans text-sm font-medium text-taupe">
-                  From ${tour.price.toLocaleString()} pp
+                  From ${tour.price.toLocaleString('en-US')} pp
                 </p>
                 <span className="font-sans text-xs tracking-wide text-rust group-hover:underline">
                   View details →
